@@ -36,7 +36,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/angular-nest-demo",
+            "outputPath": "dist/browser",
             "index": "src/index.html",
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
@@ -51,7 +51,12 @@
             "scripts": []
           },
           "configurations": {
-            "production": {
+            "prod-en": {
+              "baseHref": "/en/",
+              "outputPath": "dist/browser/en",
+              "i18nFile": "src/i18n/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en",
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
@@ -74,6 +79,51 @@
                   "maximumError": "5mb"
                 }
               ]
+            },
+            "prod-sv": {
+              "baseHref": "/sv/",
+              "outputPath": "dist/browser/sv",
+              "i18nFile": "src/i18n/messages.sv.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "sv",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "2mb",
+                  "maximumError": "5mb"
+                }
+              ]
+            },
+            "dev-en": {
+              "aot": true,
+              "outputPath": "dist/browser/en",
+              "baseHref": "/en/",
+              "i18nFile": "src/i18n/messages.en.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "en"
+            },
+            "dev-sv": {
+              "aot": true,
+              "outputPath": "dist/browser/sv",
+              "baseHref": "/sv/",
+              "i18nFile": "src/i18n/messages.sv.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "sv"
             }
           }
         },
@@ -83,8 +133,14 @@
             "browserTarget": "angular-nest-demo:build"
           },
           "configurations": {
-            "production": {
-              "browserTarget": "angular-nest-demo:build:production"
+            "prod-en": {
+              "browserTarget": "angular-nest-demo:build:prod-en"
+            },
+            "dev-en": {
+              "browserTarget": "angular-nest-demo:build:dev-en"
+            },
+            "dev-sv": {
+              "browserTarget": "angular-nest-demo:build:dev-sv"
             }
           }
         },
@@ -122,6 +178,52 @@
               "**/node_modules/**"
             ]
           }
+        },
+        "server": {
+          "builder": "@angular-devkit/build-angular:server",
+          "options": {
+            "outputPath": "dist/server",
+            "main": "src/main.server.ts",
+            "tsConfig": "src/tsconfig.server.json"
+          },
+          "configurations": {
+            "en": {
+              "outputPath": "dist/server/en",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            },
+            "sv": {
+              "outputPath": "dist/server/sv",
+              "i18nFile": "src/i18n/messages.sv.xlf",
+              "i18nFormat": "xlf",
+              "i18nLocale": "sv",
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ]
+            }
+          }
+        },
+        "xliffmerge": {
+          "builder": "@ngx-i18nsupport/tooling:xliffmerge",
+          "options": {
+            "xliffmergeOptions": {
+              "i18nFormat": "xlf",
+              "srcDir": "src/i18n",
+              "genDir": "src/i18n",
+              "defaultLanguage": "en",
+              "languages": [
+                "en",
+                "sv"
+              ]
+            }
+          }
         }
       }
     },
@@ -137,8 +239,8 @@
             "devServerTarget": "angular-nest-demo:serve"
           },
           "configurations": {
-            "production": {
-              "devServerTarget": "angular-nest-demo:serve:production"
+            "en": {
+              "devServerTarget": "angular-nest-demo:serve:en"
             }
           }
         },
